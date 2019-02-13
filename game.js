@@ -9,12 +9,18 @@ class Game{
     };
 
     startLoop() {
-        
+        this.player = new Player(this.canvas, 3);
         const loop = () => {
-            
+
+            if(Math.random() > 0.97) {
+                const y = Math.random() * this.canvas.height;
+                this.enemies.push(new Enemy(this.canvas, y));
+            };
+
+            this.checkAllCollisions();
             this.updateCanvas();
             this.clearCanvas();
-            this.drawCAnvas();
+            this.drawCanvas();
             window.requestAnimationFrame(loop);
         }
 
@@ -22,16 +28,25 @@ class Game{
     }
     
     updateCanvas() {
-
+        this.player.update();
+        this.enemies.forEach((enemy) => {
+            enemy.update();
+        });
     };
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
-    drawCAnvas() {
-
+    drawCanvas() {
+        this.player.draw();
+        this.enemies.forEach((enemy) => {
+            enemy.draw();
+        });
     };
 
+    checkAllCollisions() {
+        this.player.checkScreen();
+    }
 
 }
